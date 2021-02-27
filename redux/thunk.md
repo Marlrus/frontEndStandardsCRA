@@ -1,24 +1,24 @@
 # Redux Thunk
 
-**Ubicacion**: src/redux/actions/
+**location**: src/redux/stateName/stateName.actions
 
-Thunk es un middleware para manejar acciones asincronicas relacionadas de estado que se usa en Redux. Generalmente se utiliza para operaciones **get**. Son **action creators** que despachan multiples acciones dependiendo del estado y respuesta de un **Promise** en un API request. La convencion es usar acciones con **START, SUCCESS, FAILURE**.
+Thunk is middlewar designed to manage asynchronous action related to state used by Redux. It is generally used for **get** operations. Thunks are **action creators** that dispatch multiple actions depending on the state of a **Promise** in an API request. The convention is to use actions with **START, SUCCESS, and FAILURE** names.
 
-Thunk nos permite manejar como se renderiza un componente mientras se esta despachando una accion de API con el estado que agregamos **isFetching** para colocar un loader o deshabilitar un boton o un useEffect.
+Thunk allows us to handle how a component is rendered while an API action is being processed. With the **pending** state we created we can display a loader, desable a button, or disable a useEffect.
 
-Los thunks se manejan en el archivo de **actions**.
+Thunks are handled in the **actions** file.
 
-## Acciones que usa thunk
+## Actions used by thunk
 
-Como estas acciones no se utilizan en los componentes la el nombre de la accion no necesita llevar el final **Action** porque no va a haber colision por nombre.
+These action are not used directly by our component, therefore these actions don't need to have the **Action** word added at the end because there wont be a name collision in the component.
 
-## Thunk sin parametros
+## Thunk without parameters
 
 ```javascript
 export const getUserAction = () => async (dispatch, getState) => {
-  // getState() retorna los datos de nuestro store
+  // getState() retruns the whole state in our store
   const userPagination = getState().user.userPagination;
-  // dipatch dispara las acciones para cada estado de la promesa
+  // dispatch fires the action for each state of our promise
   dispatch(userFetchStart());
   try {
     const res = await getUser();
@@ -29,12 +29,12 @@ export const getUserAction = () => async (dispatch, getState) => {
 };
 ```
 
-## Thunk con parametros
+## Thunk with parameters
 
-Un thunk puede recibir parametros que se le pasan a nuestro servicio del api. Estos parametros se le pasan en el componente como se haria en una funcion normal. De esta forma podemos manejar paginacion o parametros en nuestros requests si se estan manejando de manera local en el coponente.
+A thunk can take parameters that are used in our API service. These parameters are sent to in our component in the same way we would using a normal function. This way we can handle pagination or parameters in our requests if they are managed locally in our component.
 
 ```javascript
-const getUserByIdAction = (userId) => async (dispatch) => {
+const getUserByIdAction = userId => async dispatch => {
   dispatch(userByIdFetchStartAction());
   try {
     const res = await getUserById(userId);
@@ -45,15 +45,14 @@ const getUserByIdAction = (userId) => async (dispatch) => {
 };
 ```
 
-## Thunk con paginacion en Redux
+## Thunk with pagination in Redux
 
-Si estamos guardando la paginacion en Redux, podemos usar getState, si se maneja localmente se utiliza un thunk con parametros.
+If we are saving the pagination state in Redux, we can use getState, if we handle it externally we can use a thunk with parameters.
 
 ```javascript
 export const getUserAction = () => async (dispatch, getState) => {
-  // getState() retorna los datos de nuestro store
+  // getState() retruns the whole state in our store
   const userPagination = getState().user.userPagination;
-  // dipatch dispara las acciones para cada estado de la promesa
   dispatch(usersFetchStart());
   try {
     const res = await getUser(userPagination);
@@ -64,26 +63,33 @@ export const getUserAction = () => async (dispatch, getState) => {
 };
 ```
 
-## Usar un Thunk
+## Using a Thunk
 
-Para usar un thunk se importa la accion y se conecta por **mapDispatchToProps** como una accion normal.
+To use a thunk, we import the action and connect it via **mapDispatchToProps** as a normal action.
 
 ```javascript
+import { getUserAction } from 'redux/user/user.actions';
+
 useEffect(() => {
   getUser();
 }, [getUser]);
+
+const mapDispatchToProps = dispatch => ({
+  getUser: () => dispatch(getUserAction()),
+});
 ```
 
-Esta accion despachara todos las acciones y podemos manejar los diferentes casos desde el store de Redux.
+This action will _dispatch_ all other actions ad we can handle different cases from our Redux store.
 
-## Debounce con Thunk
+## Debouncing with Thunk
 
-Aveces tenemos requests al API que se disparan cuando se hace un cambio en un input. Para evitar una llamada con cada tecla o cambio del input podemos implementar un **debounce**. Un debounce espera una cantidad de tiempo **en ms** desde que dejo de cambiar el input para ejecutar el API request.
+Sometimes we need to fire API requests when there is a change in an input. To avoid an API call on each keypress or input change, we can implement **debouncing**. A debounce waits a set amount of time **in milliseconds** after an input has settled to execute the API request.
 
 ```javascript
-import makeDebounce from "redux-debounce-thunk";
+import makeDebounce from 'redux-debounce-thunk';
 
-const getUserByIdThunk = (userId) => async (dispatch) => {
+// Thunk
+const getUserByIdThunk = userId => async dispatch => {
   dispatch(userByIdFetchStartAction());
   try {
     const res = await getUserById(userId);
@@ -93,7 +99,8 @@ const getUserByIdThunk = (userId) => async (dispatch) => {
   }
 };
 
+// debounced thunk action
 export const fetchUserByIdAction = makeDebounce(getUserByIdThunk, 1000);
 ```
 
-Esta accion solo ejecutara el API call cuando el input lleva quieto 1 segundo. Esto es util para filtros que se disparan con un input que genera muchos cambios como un **range** input que puede generar decenas de cambios en menos de un segundo que activan el useEffect que ejecuta la llamada del API.
+This action will only executhe the API call when the input has been still for 1 second. This is useful yor filters that have fast changing inputs like a **range** input which can generate dozens of changes in less than a second, triggering the useEffect that handles the API call.

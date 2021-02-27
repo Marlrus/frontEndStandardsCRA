@@ -49,7 +49,7 @@ When there is state set after an API call we have to manage the different states
 
 ```javascript
 const INITIAL_STATE = {
-  isFetching: false,
+  pending: false,
   userData: {
     name: '',
     id: '',
@@ -64,15 +64,15 @@ A promise is a an object that _represents the eventual completion, or failure, o
 
 1. Pending
 
-We set **isFetching** true.
+We set **pending** true.
 
 2. Rejected
 
-We set **isFetching** to false and send the error message as payload to the **error** property to handle the error case.
+We set **pending** to false and send the error message as payload to the **error** property to handle the error case.
 
 3. Resolved/Fulfiled
 
-We set **isFetching** to false and send the data related to he response to the payload to be set in our state.
+We set **pending** to false and send the data related to the response to the payload to be set in our state.
 
 #### Pagination/Infinite scroll
 
@@ -80,7 +80,7 @@ To access pagination data and handle requests, we create a state to save this da
 
 ```javascript
 const INITIAL_STATE = {
-  isFetching: false,
+  pending: false,
   userData: {
     name: '',
     id: '',

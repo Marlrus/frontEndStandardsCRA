@@ -101,7 +101,7 @@ interface ActionObject {
 Actions have the name: actionNameAction
 
 ```javascript
-const addUserDataAction = (userData) => ({
+const addUserDataAction = userData => ({
   type: userActionTypes.ADD_USER_DATA,
   payload: userData,
 });
@@ -110,9 +110,9 @@ const addUserDataAction = (userData) => ({
 The word **Action** is added to the name to avoid collisions when using them in components. Since you will want to use the _action name as the prop in the component_ have it being the same as the import can lead to a collision that the IDE will not detect and leads to unexpected hard to debug behavior:
 
 ```javascript
-import { addUserDataAction } from "redux/user/user.actions";
+import { addUserDataAction } from 'redux/user/user.actions';
 
-const mapDispatchToProps = (dispatch) => ({
-  addUserData: (userData) => dispatch(addUserDataAction),
+const mapDispatchToProps = dispatch => ({
+  addUserData: userData => dispatch(addUserDataAction(userData)),
 });
 ```
