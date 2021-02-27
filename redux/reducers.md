@@ -8,13 +8,13 @@ stateName.reducer.js
 
 Example: user.reducer.js
 
-##
+## Reducer Structure
 
-El reducer intercepta las acciones y maneja el cambio del estado en un **case**. Tienen el valor del estado inicial para esa porcion del estado en la constante **INITIAL_STATE** e importan las acciones de los archivos de accion.
+The Reducer intercepts actions and manages state changes in by **case**. They hold the initial value for the slice of state they are handling in the constant **INITIAL_STATE** and import actions from the actions file.
 
 ### Initial State
 
-Para facilitar la modificacion del estado y contextualizarnos de como manejariamos los casos dentro del reducer.
+To make modifying the state easier and seeing how the state looks when creating a case in opr reducer, we have this constant on our reducer file.
 
 ```javascript
 const INITIAL_STATE = {
@@ -27,14 +27,14 @@ const INITIAL_STATE = {
 
 ### Reducer
 
-El reducer intercepta la accion y ejecuta la logica. **Siempre** debe llevar un caso default que retorne el estado.
+The reducer intercepts an action and exectues logic related to it. It **always** has to have a **default case** that returns state to handle unrelated actions.
 
 ```javascript
 const userReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case UserActionTypes.SET_USER_DATA:
       return payload;
-    // Otros casos
+    // Other cases
     default:
       return state;
   }
@@ -43,9 +43,9 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
 export default userReducer;
 ```
 
-### Reducers con Thunk
+### Reducers with Thunk
 
-Cuando hay estado que se coloca despues de la llamada de un API, tenemos que manejar los diferentes estados de un **Promise**.
+When there is state set after an API call we have to manage the different states of a **Promise**: Pending, resolved, rejected.
 
 ```javascript
 const INITIAL_STATE = {
@@ -58,23 +58,25 @@ const INITIAL_STATE = {
 };
 ```
 
-#### Estados de promesa
+#### States of a Promise
+
+A promise is a an object that _represents the eventual completion, or failure, of an asynchronous operation and its resulting value._ A promise has 3 states that we must handle in our reducers that use Thunk.
 
 1. Pending
 
-Colocamos **isFetching** true.
+We set **isFetching** true.
 
 2. Rejected
 
-Colocamos **isFetching** false y enviamos el mensaje de error como payload para la propiedad **error** para manejar el caso de error.
+We set **isFetching** to false and send the error message as payload to the **error** property to handle the error case.
 
-3. Fullfiled/Resolved
+3. Resolved/Fulfiled
 
-Colocamos **isFetching** false y enviamos los datos de la respuesta en el payload para el estado.
+We set **isFetching** to false and send the data related to he response to the payload to be set in our state.
 
-#### Paginacion/Infinite scroll
+#### Pagination/Infinite scroll
 
-Para poder acceder a los datos de paginacion para manejar peticiones, se crea un estado para guardar estos datos en INITIAL_STATE.
+To access pagination data and handle requests, we create a state to save this data in INITIAL_STATE.
 
 ```javascript
 const INITIAL_STATE = {
@@ -93,7 +95,7 @@ const INITIAL_STATE = {
 
 ## Root Reducer
 
-El root-reducer es donde combinamos todas las porciones de estado de nuestros reducers y determinan la estructura del store. Mantenemos este archivo aparte del store en caso de que querramos persistir algun reducer o incorporar un **enhancer** en algun reducer.
+The root-reducer is where we combine every slice of state from our reducers which determines the structure of our store. We keep this file separate from the stare in case that we want to presist a reducer or add an **enhancer** to any reducer.
 
 ```javascript
 import { combineReducers } from 'redux';
