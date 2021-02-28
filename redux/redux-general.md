@@ -2,7 +2,7 @@
 
 For state management we will use Redux and Redux Thunk. Redux is a state management library that allows moving state between components in any part of an application and it is made out of 3 main parts:
 
-1. Store
+1. [Store](#store)
 
 The store is an object that contains the state data saved using Redux.
 

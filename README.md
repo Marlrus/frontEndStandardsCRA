@@ -10,11 +10,11 @@ To best implement these standards **absolute imports** are encouraged. This is e
 
 This holds information related to folder structure, component placement, and file sturcture. This aspect is the least useable in other frameworks that have file system routing such as NextJS. The goal of this section is to handle component placement in way where component tracking can be easier and avoid having single use components dumped into the **src/components** directory. This method uses two folders **components**, and **sections** to handle the filesystem. These folders can be used in multiple levels in the file-tree depending on a set of rules. Details of the implementation can be found in the **folderStructure** directory.
 
-2. Services
+2. [Services](./services/services.md)
 
 This holds information related to API calls and third party service integrations.
 
-3. Utils
+3. [Utils](./utils/utils.md)
 
 This holds information related to utils.
 
@@ -26,29 +26,29 @@ Feel free to add changes or suggestions to these standards.
 
 ## General Repo Standards
 
-Due to the flexibility offered by JavaScript/TypeScript in order to set uniformity in syntax these standards will be used accross all sections of the project and documentation.
+Due to the flexibility offered by JavaScript/TypeScript in order to set uniformity in syntax these standards are encouraged accross all sections of the project and documentation and should be looked at durin code reviews and pull requests.
 
-1. JavaScript/TypeScript files that don't have JSX/TSX syntax sholud have the .js/.ts extension.
+- JavaScript/TypeScript files that don't have JSX/TSX syntax sholud have the .js/.ts extension.
 
-2. ReactJS/ReactTS files will use the .jsx/.tsx extension. (This makes no significant difference on an IDE other than a logo, but it is semantic and allows us to infer the nature of the file without opening it)
+- ReactJS/ReactTS files will use the .jsx/.tsx extension. (This makes no significant difference on an IDE other than a logo, but it is semantic and allows us to infer the nature of the file without opening it)
 
-3. ES6 Arrow Function syntax will be used for components and functions used in the repository.
+- ES6 Arrow Function syntax will be used for components and functions used in the repository. [MDN Arrow Function Expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
 
-4. Async/Await with try/catch will be favored over .then/.catch with one exception: Using a simple API call inside a logicless useEffect. **callbacks** will not be used.
+- Async/Await with try/catch will be favored over .then/.catch with one exception: Using a simple API call inside a logicless useEffect. **callbacks** will not be used.
 
-5. const/let will be used, no var will be used. All objects/arrays will be set as **const**. The use of **const** is greatly encouraged over let.
+- const/let will be used, no var will be used. All objects/arrays will be set as **const**. The use of **const** is greatly encouraged over let.
 
-6. Functional components will be used over Class components on every case except the **Error Boundary** component which can only be done with a class component.
+- Functional components will be used over Class components on every case except the **Error Boundary** component which can only be done with a class component.
 
-7. Component state will be managed using hooks.
+- Component state will be managed using hooks. [React Hooks Overview](https://reactjs.org/docs/hooks-overview.html)
 
-8. State shared between 2 or more components that requires state to be moved up the component tree will be added to Redux. State that travels down between more than 2 components will be sent to Redux as well to avoid prop-drilling.
+- State shared between 2 or more components that requires state to be moved up the component tree will be added to Redux. State that travels down between more than 2 components will be sent to Redux as well to avoid prop-drilling.
 
-9. The use of the array methods map, filter, slice, and reduce, are highly encouraged over the use of for loops to avoid mutations that may result in unexpected behavior and to be clearer over the intention of the logic being and improve readability:
+- The use of the array methods map, filter, slice, and reduce, are highly encouraged over the use of for loops to avoid mutations that may result in unexpected behavior and to be clearer over the intention of the logic being and improve readability:
 
 **map** implies transformation of the data through all items of an array. **filter** implies the filtering of items in an array. **slice** implies the non-destructive slicing of an array. **reduce** implies the use of data in an array to create new data or a change in structure, such as data normalization.
 
-10. Push, unshift, shift, pop are not to be used and should be replaced with **spread syntax equivalents** or **slice**.
+-. Push, unshift, shift, pop are not to be used and should be replaced with **spread syntax equivalents** or **slice**. [MDN Spread Syntax Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
 
 These alternatives are non-destructive and are a safeguard against reference induced rendering errors.
 
@@ -82,7 +82,7 @@ const [firstItem, ...newArray] = array;
 const newArray = array.slice(0, array.length - 1);
 ```
 
-11. **Spread syntax** will be used when working with objects. **Object.assign()** and **delete** will not be used.
+- **Spread syntax** will be used when working with objects. **Object.assign()** and **delete** will not be used. [MDN Spread Syntax Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
 
 **Object.assign() with spread syntax**
 
@@ -165,10 +165,11 @@ newObj = {
 };
 ```
 
-12. The use of ?? will be favored over || in variable declaration and should replace a ternary when possible: `const buttonLabel = label ?? 'submit'` over `const buttonLabel = label ? label : 'subimt'`
+- The use of ?? will be favored over || in variable declaration and should replace a ternary when possible: `const buttonLabel = label ?? 'submit'` over `const buttonLabel = label ? label : 'subimt'` [Nullish coalescing operator DOCS](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
 
-13. Ternaries will only be used for variable declarations or conditional rendering and can only hold a single if/else statement for readability: `const activeClass = active ? 'active' : ''`
-14. Conditional rendering using a ternary that returns null should be replaced with &&:
+- Ternaries will only be used for variable declarations or conditional rendering and can only hold a single if/else statement for readability: `const activeClass = active ? 'active' : ''` [Ternary Operator DOCS](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)
+
+- Conditional rendering using a ternary that returns null should be replaced with && [Logical AND Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND):
 
 ```jsx
 // And
@@ -181,9 +182,19 @@ newObj = {
 }
 ```
 
-14. Inline ifs can only hold single statements.
+- Optional chaining should be use to avoid excessive && operators [Optional Chaining Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining):
 
-15. To avoid excessive if nesting use an inverse condition when using an **if statement** that envelops all the logic of a code block:
+```javascript
+// Optional Chaining
+data?.user.?property?.map(...);
+
+// && chaining
+data && data.user && data.user.property && data.user.property.map(...);
+```
+
+- Inline ifs can only hold single statements.
+
+- To avoid excessive if nesting use an inverse condition when using an **if statement** that envelops all the logic of a code block:
 
 ```javascript
 // Inverse condition

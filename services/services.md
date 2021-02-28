@@ -14,6 +14,8 @@ If the API has many endpoints, they can be separated in additional directories b
 
 **Axios** will be used for our API calls. Services in the same files must share the same **apiKey** and **rootUrl** from the **env-cmdrc** file.
 
+[Axios DOCS](https://github.com/axios/axios)
+
 ```javascript
 import axios from 'axios';
 
