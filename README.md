@@ -44,7 +44,9 @@ Due to the flexibility offered by JavaScript/TypeScript in order to set uniformi
 
 8. State shared between 2 or more components that requires state to be moved up the component tree will be added to Redux. State that travels down between more than 2 components will be sent to Redux as well to avoid prop-drilling.
 
-9. The use of the array methods map, filter, slice, and reduce, are highly encouraged over the use of for loops to avoid mutations that may result in unexpected behavior and to be clearer over the intention of the logic being and improve readability: **map** implies transformation of the data through all items of an array. **filter** implies the filtering of items in an array. **slice** implies the non-destructive slicing of an array. **reduce** implies the use of data in an array to create new data or a change in structure, such as data normalization.
+9. The use of the array methods map, filter, slice, and reduce, are highly encouraged over the use of for loops to avoid mutations that may result in unexpected behavior and to be clearer over the intention of the logic being and improve readability:
+
+**map** implies transformation of the data through all items of an array. **filter** implies the filtering of items in an array. **slice** implies the non-destructive slicing of an array. **reduce** implies the use of data in an array to create new data or a change in structure, such as data normalization.
 
 10. Push, unshift, shift, pop are not to be used and should be replaced with **spread syntax equivalents** or **slice**.
 

@@ -1,48 +1,62 @@
 # Services
 
-Para manejo de los API calls se tiene el directiorio **services** en src/services/
+For handling API calls we will use the **services** directory located in **src/services/**
 
-En este directorio se manejan los servicios por API:
+In this directory, services will be separated by API:
 
-**src/services/habi-brokers-api.js**
+**src/services/api_name.js**
 
-Si el api tiene muchos endpoints, se pueden separar en directorios adicionales por categoria:
+If the API has many endpoints, they can be separated in additional directories by category:
 
-**src/services/habi-brokers-api/broker.js**
+**src/services/api_name/category_name.js**
 
-## Archivo de Services
+## Services file
 
-Utilizamos **Axios** para nuestras llamadas de API. Este archivo debe incluir el **apiKey**, y el **rootUrl** que provienen de nuestro archivo de entorno **env-cmdrc**.
+**Axios** will be used for our API calls. Services in the same files must share the same **apiKey** and **rootUrl** from the **env-cmdrc** file.
 
 ```javascript
-import axios from "axios";
+import axios from 'axios';
 
-const apiKey = process.env.REACT_APP_HABI_API_BROKERS_KEY;
+const apiKey = process.env.REACT_APP_API_NAME_API_KEY;
 const rootUrl =
-  process.env.REACT_APP_HABI_API_URL_V2 +
-  process.env.REACT_APP_ENDPOINT_HABI_BROKERS_API_BASE_PATH;
+  process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_API_BASE_PATH;
 ```
 
-## Servicios
+## Services
 
-Los servicios son funciones que hacen nuestro API Call. Estas funciones son un wrapper que construyen nuestro request donde compartimos rootUrl y apiKey. Como van a ser manejadas dentro de un **try/catch** block o un **then/catch**, solo tenemos que retornar el axios:
+Services are functions that return a **Promise** that makes our API call. These functions are a wrapper that make our request by sharing our rootUrl and apiKey. Since they will be handled inside a **try/catch** block or **then/catch**, we only need to return the promise created by axios, therefore the function is not an **async** function:
 
 ```javascript
-export const getInitialBroker = async (email) => {
-  const endpointUrl = process.env.REACT_APP_HABI_API_GET_INITIAL;
+export const getUserByEmail = email => {
+  const endpointUrl = process.env.REACT_APP_GET_USER_BY_EMAIL;
   const url = rootUrl + endpointUrl;
-  const data = {
+  const headers = {
+    'x-api-key': apiKey,
+    'Content-Type': 'application/json',
+  };
+  const params = {
     mail: email,
     limit: 10,
     offset: 0,
   };
-  return await axios.post(url, JSON.stringify(data), {
-    headers: {
-      "x-api-key": apiKey,
-      "Content-Type": "application/json",
-    },
+  return axios({
+    method: 'get',
+    url,
+    params,
+    headers,
   });
 };
 ```
 
-Dentro de nuestro thunk o useEffect vamos a manejar la respuesta o error, despachando acciones en Thunk, o manejo con estado del componente.
+Using the **axios** function directly is more uniform, however, axios methods can be used as well:
+
+```javascript
+return axios.get(url, params, {
+  headers: {
+    'x-api-key': apiKey,
+    'Content-Type': 'application/json',
+  },
+});
+```
+
+Inside our [thunk actions](../redux/thunk.md) or useEffect we will handle the response or error, dispatching actions in Thunk, or managing them using component state.

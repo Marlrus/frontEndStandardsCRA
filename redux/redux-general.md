@@ -6,13 +6,17 @@ For state management we will use Redux and Redux Thunk. Redux is a state managem
 
 The store is an object that contains the state data saved using Redux.
 
-2. Reducers
+2. [Reducers](./reducers.md)
 
 Reducers handle the logic involved in saving state to the Redux store.
 
-3. Actions
+3. [Actions](./actions.md)
 
 Actions send the messages and data to the reducers so that they can be intercepted and handled to be saved in the store.
+
+## [Thunk](./thunk.md)
+
+Redux thunk is middleware for handling async operation with Redux.
 
 ## Directory structure and file names
 
@@ -41,19 +45,19 @@ Exapmle: user.reducer.js
 
 ## Store
 
-The store handles storing the data handled by our reducers and inyecting middlewar.
+The store handles storing the data handled by our reducers and inyecting middleware.
 
-```
+```javascript
 // Standard store file
 
-import { createStore, applyMiddleware } from "redux";
-import { rootReducer } from "./root-reducer";
-import logger from "redux-logger";
-import thunk from "redux-thunk";
+import { createStore, applyMiddleware } from 'redux';
+import { rootReducer } from './root-reducer';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 const middleware = [thunk];
 
-if (process.env.NODE_ENV === "development") middleware.push(logger);
+if (process.env.NODE_ENV === 'development') middleware.push(logger);
 
 const store = createStore(rootReducer, applyMiddleware(...middleware));
 
