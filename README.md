@@ -2,7 +2,7 @@
 
 The goal of this documentation is to create a standard around different aspects of an application. Although it is mainly oriented around Create React App, many principles can be applied around other React frameworks.
 
-To best implement these standards **absolute imports** are encouraged. This is easily handled in the **jsonconfig.json** or **tsconfig.json** files. (React DOCS on absolute imports)[https://create-react-app.dev/docs/importing-a-component/#absolute-imports]
+To best implement these standards **absolute imports** are encouraged. This is easily handled in the **jsonconfig.json** or **tsconfig.json** files. [React DOCS on absolute imports](https://create-react-app.dev/docs/importing-a-component/#absolute-imports)
 
 ## Documentation Sections
 
@@ -18,7 +18,7 @@ This holds information related to API calls and third party service integrations
 
 This holds information related to utils.
 
-4. (Redux)[./redux/redux-general.md]
+4. [Redux](./redux/redux-general.md)
 
 This section holds information related to Redux such as folder structure, file names, implementation standards, and base guides for base redux functionality and Redux Thunk.
 
@@ -96,7 +96,8 @@ const obj2 = {
   area: 25,
 };
 
-// Objects will be merged into a new object, overlapping props in obj1 and obj2 will be overriden by the values in obj2
+// Objects will be merged into a new object
+// Overlapping props in obj1 and obj2 will be overriden by the values in obj2
 const newObj = { ...obj1, ...obj2 };
 
 // Resulting object
@@ -121,6 +122,40 @@ const object = {
 
 // List props to remove
 const { city, area, ...newObj } = object;
+
+newObj = {
+  propertyName: 'test',
+  antiquity: 20,
+};
+```
+
+**delete with spread syntax using dynamic values**
+
+```javascript
+const object = {
+  propertyName: 'test',
+  antiquity: 20,
+  city: 'Bogota',
+  area: 25,
+};
+
+// General util to non-destructively remove multiple object props
+const removeProps = (object, ...props) => {
+  const newObject = props.reduce((accumulator, prop) => {
+    const { [prop]: ignore, ...rest } = accumulator;
+    return rest;
+  }, object);
+  return newObject;
+};
+
+// Inline version
+const removePropsInline = (object, ...props) =>
+  props.reduce((accumulator, prop) => {
+    const { [prop]: ignore, ...rest } = accumulator;
+    return rest;
+  }, object);
+
+const newObj = removeProps(object, 'area', 'city');
 
 newObj = {
   propertyName: 'test',
