@@ -1,5 +1,7 @@
 # Redux standards and configuration
 
+[Back to Main Docs](../README.md)
+
 For state management we will use Redux and Redux Thunk. Redux is a state management library that allows moving state between components in any part of an application and it is made out of 3 main parts:
 
 1. [Store](#store)

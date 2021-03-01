@@ -1,5 +1,7 @@
 # Reducers
 
+[Back to Redux](./redux-general.md)
+
 **Location**: src/redux/stateName/
 
 ## Reducer file name
@@ -8,7 +10,17 @@ stateName.reducer.js
 
 Example: user.reducer.js
 
+## Index
+
+1. [Reducer Structure](#reducer-structure)
+2. [Reducer](#reducer)
+3. [States of a Promise](#states-of-a-promise)
+4. [Pagination and Infinite Scroll](#pagination-and-infinite-scroll)
+5. [Root Reducer](#root-reducer)
+
 ## Reducer Structure
+
+[index](#index)
 
 The Reducer intercepts actions and manages state changes in by **case**. They hold the initial value for the slice of state they are handling in the constant **INITIAL_STATE** and import actions from the actions file.
 
@@ -26,6 +38,8 @@ const INITIAL_STATE = {
 ```
 
 ### Reducer
+
+[index](#index)
 
 The reducer intercepts an action and exectues logic related to it. It **always** has to have a **default case** that returns state to handle unrelated actions.
 
@@ -60,6 +74,8 @@ const INITIAL_STATE = {
 
 #### States of a Promise
 
+[index](#index)
+
 A promise is a an object that _represents the eventual completion, or failure, of an asynchronous operation and its resulting value._ A promise has 3 states that we must handle in our reducers that use Thunk.
 
 1. Pending
@@ -74,7 +90,7 @@ We set **pending** to false and send the error message as payload to the **error
 
 We set **pending** to false and send the data related to the response to the payload to be set in our state.
 
-#### Pagination/Infinite scroll
+#### Pagination and Infinite scroll
 
 To access pagination data and handle requests, we create a state to save this data in INITIAL_STATE.
 
@@ -94,6 +110,8 @@ const INITIAL_STATE = {
 ```
 
 ## Root Reducer
+
+[index](#index)
 
 The root-reducer is where we combine every slice of state from our reducers which determines the structure of our store. We keep this file separate from the stare in case that we want to presist a reducer or add an **enhancer** to any reducer.
 

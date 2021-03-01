@@ -1,5 +1,7 @@
 # Services
 
+[Back to Main Docs](../README.md)
+
 For handling API calls we will use the **services** directory located in **src/services/**
 
 In this directory, services will be separated by API:
@@ -10,7 +12,14 @@ If the API has many endpoints, they can be separated in additional directories b
 
 **src/services/api_name/category_name.js**
 
+## Index
+
+1. [Services File](#services-file)
+2. [Services](#services)
+
 ## Services file
+
+[index](#index)
 
 **Axios** will be used for our API calls. Services in the same files must share the same **apiKey** and **rootUrl** from the **env-cmdrc** file.
 
@@ -25,6 +34,8 @@ const rootUrl =
 ```
 
 ## Services
+
+[index](#index)
 
 Services are functions that return a **Promise** that makes our API call. These functions are a wrapper that make our request by sharing our rootUrl and apiKey. Since they will be handled inside a **try/catch** block or **then/catch**, we only need to return the promise created by axios, therefore the function is not an **async** function:
 

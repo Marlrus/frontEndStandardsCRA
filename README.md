@@ -4,9 +4,16 @@ The goal of this documentation is to create a standard around different aspects 
 
 To best implement these standards **absolute imports** are encouraged. This is easily handled in the **jsonconfig.json** or **tsconfig.json** files. [React DOCS on absolute imports](https://create-react-app.dev/docs/importing-a-component/#absolute-imports)
 
+## Index
+
+1. [Documentation Sections](#documentation-sections)
+2. [General Repo Standards](#general-repo-standards)
+
 ## Documentation Sections
 
 1. [Folder and File Structure](./folderAndFileStructure/folderAndFileStructure.md)
+
+[index](#index)
 
 This holds information related to folder structure, component placement, and file sturcture. This aspect is the least useable in other frameworks that have file system routing such as NextJS. The goal of this section is to handle component placement in way where component tracking can be easier and avoid having single use components dumped into the **src/components** directory. This method uses two folders **components**, and **sections** to handle the filesystem. These folders can be used in multiple levels in the file-tree depending on a set of rules. Details of the implementation can be found in the **folderStructure** directory.
 
@@ -28,7 +35,13 @@ This section holds information related to Redux such as folder structure, file n
 
 Feel free to add changes or suggestions to these standards.
 
+5. [Styles and Assets](./stylesAndAssets/stylesAndAssets.md)
+
+Details on handling global styles and assets.
+
 ## General Repo Standards
+
+[index](#index)
 
 Due to the flexibility offered by JavaScript/TypeScript in order to set uniformity in syntax these standards are encouraged accross all sections of the project and documentation and should be looked at durin code reviews and pull requests.
 

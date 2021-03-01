@@ -1,8 +1,15 @@
 # Actions
 
+[Back to Redux](./redux-general.md)
+
 **Location**: src/redux/stateName/
 
 Since we will be using absolute imports, anything related to redux can be accessed with the "redux/stateName/" pattern.
+
+## Index
+
+1. [ActionTypes](#actiontypes)
+2. [Action Functions](#action-functions)
 
 ## Action file name
 
@@ -15,6 +22,8 @@ Exapmle: user.actions.js
 The Action file contains the name of the actions that will be used in the reducer and action funcitions, as well as the action functions, and thunk actions.
 
 ### ActionTypes
+
+[index](#index)
 
 These are the strings that will be used in the **type** property of our actions and the **case** section of our switch statement in our reducers. If the action type is to be changed, we can replace the value in this object and the change will be reflected in our reducer and actions simultaneously. This process can be done using **F2** in VSCode or using _search and replace_ in your IDE, or the _LSP server_.
 
@@ -87,6 +96,8 @@ In the case that many actions are handled sequentialy, it is _valid to create an
 This pattern should be considered when you need to fire 2 actions on an event such as the closing of a modal or an API call.
 
 ### Action Functions
+
+[index](#index)
 
 Actions are functions **that return an object**. The **type** proprety is mandatory, whereas the **payload** property is optional and depends on the action and how it will be handled by the reducer.
 

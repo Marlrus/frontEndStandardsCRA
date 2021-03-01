@@ -13,6 +13,8 @@ Standards for file naming are also important in order to keep a uniform naming c
 
 ## File Structure
 
+[index](#index)
+
 Components live in a directory and the naming is capitalized. There are 4 files that can hold differet parts of the logic from a component:
 
 1. ComponentName.jsx
@@ -187,7 +189,7 @@ To make imports easier in testing, we will have the test file in the component d
 
 The motivation of this structure is to handle component directories as self contained entities that make it easier to find components in the place you are working at, removes clutter from the main components directory, and offers an organized way to move and use componenents.
 
-Directories are handled in gropus of two: **components** and **sections**. Optionally, the equivalent **sections** directory in the root src/ directory can be called **pages**. There are multiple **copmonents** and **sections** directories and each directory follows a set of rules that achieve the order of the file-tree.
+Directories are handled in gropus of two: **components** and **sections**. Optionally, the equivalent **sections** directory in the root src/ directory can be called **pages**. There are multiple **components** and **sections** directories and each directory follows a set of rules that achieve the order of the file-tree.
 
 - **sections** can have nested **components** or **sections** directiories.
 - **components** can have nested **components** directories, but _NOT_ **sections** directories.
@@ -216,10 +218,10 @@ Root components directory example src/components:
 │   │   └── ButtonV2.style.jsx
 ```
 
-- Only BottomNav has access to IconNavItem, and ButtonV2.
+- Only BottomNav has access to IconNavItem
+- BottomNav and ButtonV2 can be used **anywhere** in the application
 - ButtonV2 has access to BottomNav only
 - IconNavItem has access to ButtonV2
-- BottomNav and ButtonV2 can be used **anywhere** in the application
 - ButtonV2 cannot access IconNavItem
 
 If the IconNavItem component where to be used by ButtonV2 it would be moved up to the root components directory.
@@ -282,7 +284,37 @@ In this structure we can deduce the following:
 
 If a component can be used between two _brother_ components or many other components. It should be moved to the closest related parent node, or the src/components directory.
 
-In the previous example, if the VisitSurvey component was to be used by multiple sections, it would be moved up into the src/pages/components directory along with its content.
+In the previous example, if the VisitSurvey component was to be used by multiple sections, it would be moved up into the src/pages/components directory along with its content:
+
+```bash
+├── pages
+│   ├── components
+│   │   ├── SocialMediaModal
+│   │   │   ├── SocialMediaModal.jsx
+│   │   │   └── SocialMediaModal.style.jsx
+│   │   └── VisitSurvey
+│   │       ├── components
+│   │       │   └── SurveyState
+│   │       │       ├── SurveyState.jsx
+│   │       │       └── SurveyState.style.jsx
+│   │       ├── VisitSurvey.jsx
+│   │       └── VisitSurvey.style.jsx
+│   ├── Dashboard
+│   │   ├── components
+│   │   │   ├── DailyCard
+│   │   │   │   ├── DailyCard.jsx
+│   │   │   │   └── DailyCard.style.jsx
+│   │   ├── Dashboard.style.jsx
+│   │   ├── Dashboard.jsx
+│   │   └── Dashboard.test.js
+│   │   └── sections
+│   │       └── Profile
+│   │           ├── components
+│   │           │   ├── FormProfileInfo
+│   │           │   │   ├── FormProfileInfo.jsx
+│   │           │   │   ├── FormProfileInfo.style.jsx
+│   │           │   │   └── FormProfileInfo.test.js
+```
 
 ### Complete example
 
