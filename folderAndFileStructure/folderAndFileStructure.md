@@ -1,8 +1,15 @@
 # Folder and File Structure
 
+[Return to main index](../README.md)
+
 A component is the base unit used when creating a React app. Components can be re-usable, however, it is quite often that you have to create components that will only be used for a certain part of your application. If the normal structure of a src/components directory and a src/pages directory you may end up with hundreds of components under the same directory making it very hard to find and track where you need to work.
 
 Standards for file naming are also important in order to keep a uniform naming convention across the repository and to have a clear understanding of where you can find certain logic of a component.
+
+## Index
+
+1. [File Structure](#file-structure)
+2. [Folder Structure](#folder-structure)
 
 ## File Structure
 
@@ -46,7 +53,7 @@ Imports should follow the following order to make finding specific import statem
 
 ```jsx
 // React imports, As of now React is required for Jest testing in React 17
-import React, { useState, useEffct } from 'react';
+import React, { useState, useEffect } from 'react';
 // Enhancer imports
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -66,7 +73,7 @@ import { ComponentContainer, HeaderContainer } from './ComponentName.style';
 
 #### Props and State
 
-Items that come into the component **should not be added to local state**. If data has to be derived or processed form the prop, it can be done so directly in the component:
+Props that come into the component **should not be added to local state**. If data has to be derived or processed form the prop, it can be done so directly in the component:
 
 ```jsx
 const ComponentName = ({ listItems }) => {
@@ -173,3 +180,187 @@ const getInput = inputType => {
 ### Component Test
 
 To make imports easier in testing, we will have the test file in the component directory. Since we have absolute imports, getting mocks or general components is much easier.
+
+## Folder Structure
+
+[index](#index)
+
+The motivation of this structure is to handle component directories as self contained entities that make it easier to find components in the place you are working at, removes clutter from the main components directory, and offers an organized way to move and use componenents.
+
+Directories are handled in gropus of two: **components** and **sections**. Optionally, the equivalent **sections** directory in the root src/ directory can be called **pages**. There are multiple **copmonents** and **sections** directories and each directory follows a set of rules that achieve the order of the file-tree.
+
+- **sections** can have nested **components** or **sections** directiories.
+- **components** can have nested **components** directories, but _NOT_ **sections** directories.
+- Components in any directory can only import files from **components** or **sections** intheir directory and directories higher up in the file tree (parent/grandparent/... directories).
+- Components can not access components that are nested in **components** or **sections** in a parent directory (cousin directories).
+- Components that are used by two or more components should be moved to the first parent directory that is shared by both components looking to import it.
+
+### Components example
+
+Root components directory example src/components:
+
+```bash
+├── components
+│   ├── BottomNav
+│   │   ├── BottomNav.jsx
+│   │   ├── BottomNav.style.jsx
+│   │   ├── BottomNav.test.js
+│   │   ├── BottomNav.utils.jsx
+│   │   └── components
+│   │       └── IconNavItem
+│   │           ├── IconNavItem.jsx
+│   │           ├── IconNavItem.styles.jsx
+│   │           └── IconNavItem.test.js
+│   ├── ButtonV2
+│   │   ├── ButtonV2.jsx
+│   │   └── ButtonV2.style.jsx
+```
+
+- Only BottomNav has access to IconNavItem, and ButtonV2.
+- ButtonV2 has access to BottomNav only
+- IconNavItem has access to ButtonV2
+- BottomNav and ButtonV2 can be used **anywhere** in the application
+- ButtonV2 cannot access IconNavItem
+
+If the IconNavItem component where to be used by ButtonV2 it would be moved up to the root components directory.
+
+In this patterns every component in the root directory is its _self contained_ directory with components only used in it inside. This avoids adding single use or non generic components to the main components directory that will be used throughout the application.
+
+### Sections/Pages exapmle
+
+The following exapmle simulates a migration form the components/ pages/ pattern where the pages directory is not renamed to **sections**.
+
+```bash
+├── pages
+│   ├── components
+│   │   ├── SocialMediaModal
+│   │   │   ├── SocialMediaModal.jsx
+│   │   │   └── SocialMediaModal.style.jsx
+│   ├── Dashboard
+│   │   ├── components
+│   │   │   ├── DailyCard
+│   │   │   │   ├── DailyCard.jsx
+│   │   │   │   └── DailyCard.style.jsx
+│   │   │   └── VisitSurvey
+│   │   │       ├── components
+│   │   │       │   └── SurveyState
+│   │   │       │       ├── SurveyState.jsx
+│   │   │       │       └── SurveyState.style.jsx
+│   │   │       ├── VisitSurvey.jsx
+│   │   │       └── VisitSurvey.style.jsx
+│   │   ├── Dashboard.style.jsx
+│   │   ├── Dashboard.jsx
+│   │   └── Dashboard.test.js
+│   │   └── sections
+│   │       └── Profile
+│   │           ├── components
+│   │           │   ├── FormProfileInfo
+│   │           │   │   ├── FormProfileInfo.jsx
+│   │           │   │   ├── FormProfileInfo.style.jsx
+│   │           │   │   └── FormProfileInfo.test.js
+```
+
+**sections** can have **components** and **sections** directories. In this exapmle the Dashboard section has a components/ and sections/ directory.
+
+A section in the src/pages directory usually has it's own route. This holds true for nested sections.
+
+- Dashboard has access to DailyCard, VisitSurvey, Profile, and SocialMediaModal.
+- VisitSurvey has access to SurveyState, DailyCard, and SocialMediaModal.
+- SocialMediaModal only has access to components from **src/components**.
+- Profile has exclusive access to FormProfileInfo, access to DailyCard, VisitSurvey, and SocialMediaModal.
+- Dashboard can **not** access SurveyState or FormProfileInfo.
+
+Each section contains components related to its route and components in src/pages/components are shared accross different sections but are not re-usable enough to be moved to src/components.
+
+In this structure we can deduce the following:
+
+- All of the components belonging exclusively to the /dashboard route are located in the directories within it.
+- SurveyState is a single use component that is noly used in VisitSurvey.
+- SocialMediaModal is used in other sections beyond dashboard.
+
+### Moving Components
+
+If a component can be used between two _brother_ components or many other components. It should be moved to the closest related parent node, or the src/components directory.
+
+In the previous example, if the VisitSurvey component was to be used by multiple sections, it would be moved up into the src/pages/components directory along with its content.
+
+### Complete example
+
+```bash
+├── App.jsx
+├── components
+│   ├── BottomNav
+│   │   ├── BottomNav.jsx
+│   │   ├── BottomNav.style.jsx
+│   │   ├── BottomNav.test.js
+│   │   ├── BottomNav.utils.jsx
+│   │   └── components
+│   │       ├── FloatingButtonNav
+│   │       │   ├── FloatingButtonNav.jsx
+│   │       │   ├── FloatingButtonNav.styles.jsx
+│   │       │   ├── FloatingButtonNav.test.js
+│   │       │   └── FloatingButtonNav.utils.js
+│   │       └── IconNavItem
+│   │           ├── IconNavItem.jsx
+│   │           ├── IconNavItem.styles.jsx
+│   │           └── IconNavItem.test.js
+│   ├── ButtonV2
+│   │   ├── ButtonV2.jsx
+│   │   └── ButtonV2.style.jsx
+├── IconsAndLogos.js
+├── index.js
+├── index.scss
+├── __mocks__
+│   ├── providerMocks.js
+│   ├── reduxMockInitialState.js
+│   └── styleMock.js
+├── pages
+│   ├── components
+│   │   ├── SocialMediaModal
+│   │   │   ├── SocialMediaModal.jsx
+│   │   │   └── SocialMediaModal.style.jsx
+│   ├── Dashboard
+│   │   ├── components
+│   │   │   ├── DailyCard
+│   │   │   │   ├── DailyCard.jsx
+│   │   │   │   └── DailyCard.style.jsx
+│   │   │   └── VisitSurvey
+│   │   │       ├── components
+│   │   │       │   ├── SurveyEntry
+│   │   │       │   │   ├── SurveyEntry.jsx
+│   │   │       │   │   └── SurveyEntry.style.jsx
+│   │   │       │   └── SurveyState
+│   │   │       │       ├── SurveyState.jsx
+│   │   │       │       └── SurveyState.style.jsx
+│   │   │       ├── VisitSurvey.jsx
+│   │   │       └── VisitSurvey.style.jsx
+│   │   ├── Dashboard.style.jsx
+│   │   ├── Dashboard.jsx
+│   │   └── Dashboard.test.js
+│   │   └── sections
+│   │       └── Profile
+│   │           ├── components
+│   │           │   ├── FormProfileInfo
+│   │           │   │   ├── FormProfileInfo.jsx
+│   │           │   │   ├── FormProfileInfo.style.jsx
+│   │           │   │   └── FormProfileInfo.test.js
+│   │           │   ├── ProfilePreferences
+│   │           │   │   ├── components
+│   │           │   │   │   └── Flag
+│   │           │   │   │       ├── Flag.jsx
+│   │           │   │   │       ├── Flag.style.jsx
+│   │           │   │   │       └── Flag.test.js
+│   │           │   │   ├── ProfilePreferences.jsx
+│   │           │   │   ├── ProfilePreferences.style.jsx
+│   │           │   │   └── ProfilePreferences.test.js
+│   │           │   └── ProfileSecurity
+│   │           │       ├── AccountDeleteForm.jsx
+│   │           │       ├── AccountDeleteForm.test.js
+│   │           │       ├── PasswordChangeForm.jsx
+│   │           │       ├── PasswordChangeForm.test.js
+│   │           │       ├── ProfileSecurity.jsx
+│   │           │       └── ProfileSecurity.style.jsx
+│   │           ├── ProfileContainer.jsx
+│   │           ├── Profile.jsx
+│   │           └── Profile.style.jsx
+```

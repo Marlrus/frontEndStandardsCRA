@@ -6,7 +6,7 @@ To best implement these standards **absolute imports** are encouraged. This is e
 
 ## Documentation Sections
 
-1. Folder and File Structure
+1. [Folder and File Structure](./folderAndFileStructure/folderAndFileStructure.md)
 
 This holds information related to folder structure, component placement, and file sturcture. This aspect is the least useable in other frameworks that have file system routing such as NextJS. The goal of this section is to handle component placement in way where component tracking can be easier and avoid having single use components dumped into the **src/components** directory. This method uses two folders **components**, and **sections** to handle the filesystem. These folders can be used in multiple levels in the file-tree depending on a set of rules. Details of the implementation can be found in the **folderStructure** directory.
 
@@ -14,7 +14,7 @@ This holds information related to folder structure, component placement, and fil
 
 This holds information related to API calls and third party service integrations.
 
-3. [Utils](#utils)
+3. Utils
 
 Utils are files that hold utility functions that can be used across the repository, such as date format utils, general utils, or utils for processing data from certain parts of your application.
 
@@ -172,6 +172,8 @@ newObj = {
 - The use of ?? will be favored over || in variable declaration and should replace a ternary when possible: `const buttonLabel = label ?? 'submit'` over `const buttonLabel = label ? label : 'subimt'` [Nullish coalescing operator DOCS](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator)
 
 - Ternaries will only be used for variable declarations or conditional rendering and can only hold a single if/else statement for readability: `const activeClass = active ? 'active' : ''` [Ternary Operator DOCS](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator)
+
+If handling multiple if/else statements the use of **if/else** or **swith/case** should be considered as an alternative.
 
 - Conditional rendering using a ternary that returns null should be replaced with && [Logical AND Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_AND):
 

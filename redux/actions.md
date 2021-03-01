@@ -24,15 +24,15 @@ Actions **always have the state name of the state being handled to avoid action 
 
 ```javascript
 export const userActionTypes = {
-  USER_FETCH_START: "USER_FETCH_START",
-  USER_FETCH_SUCCESS: "USER_FETCH_SUCCESS,
-  USER_FETCH_FAILURE: "USER_FETCH_FAILURE",
-  SET_USER_DATA: "SET_USER_DATA",
-  CLEAR_USER_DATA: "CLEAR_USER_DATA",
-  UPDATE_USER_DATA: "UPDATE_USER_DATA",
-  REMOVE_USER_DATA: "REMOVE_USER_DATA",
-  ADD_USER_DATA: "ADD_USER_DATA",
-}
+  USER_FETCH_START: 'USER_FETCH_START',
+  USER_FETCH_SUCCESS: 'USER_FETCH_SUCCESS',
+  USER_FETCH_FAILURE: 'USER_FETCH_FAILURE',
+  SET_USER_DATA: 'SET_USER_DATA',
+  CLEAR_USER_DATA: 'CLEAR_USER_DATA',
+  UPDATE_USER_DATA: 'UPDATE_USER_DATA',
+  REMOVE_USER_DATA: 'REMOVE_USER_DATA',
+  ADD_USER_DATA: 'ADD_USER_DATA',
+};
 ```
 
 Actions mus be _descriptive_ with what the action is doing. For CRUD operations:
@@ -110,9 +110,13 @@ const addUserDataAction = userData => ({
 The word **Action** is added to the name to avoid collisions when using them in components. Since you will want to use the _action name as the prop in the component_ have it being the same as the import can lead to a collision that the IDE will not detect and leads to unexpected hard to debug behavior:
 
 ```javascript
-import { addUserDataAction } from 'redux/user/user.actions';
+import {
+  addUserDataAction,
+  clearUserDataAction,
+} from 'redux/user/user.actions';
 
 const mapDispatchToProps = dispatch => ({
   addUserData: userData => dispatch(addUserDataAction(userData)),
+  clearUserData: () => dispatch(clearUserDataAction()),
 });
 ```
