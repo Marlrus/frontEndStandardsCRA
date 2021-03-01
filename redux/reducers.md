@@ -92,6 +92,8 @@ We set **pending** to false and send the data related to the response to the pay
 
 #### Pagination and Infinite scroll
 
+[index](#index)
+
 To access pagination data and handle requests, we create a state to save this data in INITIAL_STATE.
 
 ```javascript

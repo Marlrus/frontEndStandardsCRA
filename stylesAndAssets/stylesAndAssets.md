@@ -161,7 +161,8 @@ Now these paths can be used in a component easily:
 import { logos, icons } from 'Images';
 
 // Inside component, works for logos and icons
-<img src={logo.Bell} alt='bell' />;
+<img src={logos.CompanyLogo} alt='Company Logo' />;
+<img src={icons.Bell} alt='bell icon' />;
 ```
 
 This facilitates the use of images and imports because image imports are seldom completed by the IDE or LSP and can be nested deep in the **static** directory.
