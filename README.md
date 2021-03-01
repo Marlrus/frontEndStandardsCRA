@@ -14,9 +14,13 @@ This holds information related to folder structure, component placement, and fil
 
 This holds information related to API calls and third party service integrations.
 
-3. [Utils](./utils/utils.md)
+3. [Utils](#utils)
 
-This holds information related to utils.
+Utils are files that hold utility functions that can be used across the repository, such as date format utils, general utils, or utils for processing data from certain parts of your application.
+
+Utils files will be located in **src/utils/**
+
+These files will follow the naming convention: `utilCategoryUtils.js/.ts`
 
 4. [Redux](./redux/redux-general.md)
 
@@ -201,12 +205,12 @@ data && data.user && data.user.property && data.user.property.map(...);
 useEffect(() => {
   if (user !== 'admin') return;
   // Admin logic
-});
+}, []);
 
 // Single condition useEffect if
 useEffect(() => {
   if (user === 'admin') {
     // Admin logic
   }
-});
+}, []);
 ```
